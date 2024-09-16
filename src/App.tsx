@@ -11,8 +11,8 @@ const App: React.FC = () => {
   return (
     <div className='app'>
       <Typography variant='h4'>Tree Structure - Farid shariati</Typography>
-      <Typography>
-        hint: For edit tree name just click on tree name and edit it .
+      <Typography fontWeight='bold' bgcolor='yellow'>
+        Hint: For edit tree name just click on tree name and edit it .
       </Typography>
       <TreeForm />
       <Tree nodes={nodes} />
