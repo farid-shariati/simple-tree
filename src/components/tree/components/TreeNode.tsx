@@ -25,6 +25,11 @@ export const TreeNode: React.FC<TTreeNodeProps> = ({ node, parentId }) => {
     handleToggle,
     handleDelete,
     handleAddChild,
+    isEditing,
+    setIsEditing,
+    editName,
+    setEditName,
+    handleEditName,
   } = useTreeNode({ node })
 
   return (
@@ -38,7 +43,19 @@ export const TreeNode: React.FC<TTreeNodeProps> = ({ node, parentId }) => {
         ) : (
           <FolderOpenOutlinedIcon />
         )}
-        <Typography ml={1}>{node.name}</Typography>
+        {isEditing ? (
+          <CustomTextField
+            value={editName}
+            onChange={(e) => setEditName(e.target.value)}
+            onBlur={handleEditName}
+            placeholder='Edit node name'
+            autoFocus
+          />
+        ) : (
+          <Typography ml={1} onClick={() => setIsEditing(true)}>
+            {node.name}
+          </Typography>
+        )}
         <IconButton color='error' onClick={handleDelete} sx={{ ml: 2 }}>
           <DeleteOutlinedIcon />
         </IconButton>

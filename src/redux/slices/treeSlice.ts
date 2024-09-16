@@ -71,9 +71,38 @@ const treeSlice = createSlice({
       }
       toggleFolderRecursively(state.nodes, action.payload)
     },
+    updateNodeName(
+      state,
+      action: PayloadAction<{ id: string; newName: string }>,
+    ) {
+      const updateNameRecursively = (
+        nodes: TTreeNode[],
+        id: string,
+        newName: string,
+      ): TTreeNode[] => {
+        return nodes.map((node) => {
+          if (node.id === id) {
+            return { ...node, name: newName }
+          }
+          if (node.children) {
+            return {
+              ...node,
+              children: updateNameRecursively(node.children, id, newName),
+            }
+          }
+          return node
+        })
+      }
+      state.nodes = updateNameRecursively(
+        state.nodes,
+        action.payload.id,
+        action.payload.newName,
+      )
+    },
   },
 })
 
-export const { addNode, deleteNode, toggleFolder } = treeSlice.actions
+export const { addNode, deleteNode, toggleFolder, updateNodeName } =
+  treeSlice.actions
 export const selectNodes = (state: RootState) => state.tree.nodes
 export default treeSlice.reducer

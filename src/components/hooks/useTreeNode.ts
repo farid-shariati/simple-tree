@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/redux/store'
-import { addNode, deleteNode, toggleFolder } from '@/redux/slices/treeSlice'
+import {
+  addNode,
+  deleteNode,
+  toggleFolder,
+  updateNodeName,
+} from '@/redux/slices/treeSlice'
 import { TTreeNode, TUseTreeNodeProps } from '@/types'
 
 export const useTreeNode = ({ node }: TUseTreeNodeProps) => {
@@ -12,6 +17,8 @@ export const useTreeNode = ({ node }: TUseTreeNodeProps) => {
   const [newChildType, setNewChildType] = useState<'file' | 'folder'>('file')
   const [isAddingChild, setIsAddingChild] = useState(false)
   const [isOpen, setIsOpen] = useState(node.isOpen || false)
+  const [isEditing, setIsEditing] = useState(false)
+  const [editName, setEditName] = useState(node.name || '')
 
   useEffect(() => {
     const findNodeById = (
@@ -61,6 +68,13 @@ export const useTreeNode = ({ node }: TUseTreeNodeProps) => {
     }
   }
 
+  const handleEditName = () => {
+    if (editName && editName !== node.name) {
+      dispatch(updateNodeName({ id: node.id, newName: editName }))
+      setIsEditing(false)
+    }
+  }
+
   return {
     newChildName,
     setNewChildName,
@@ -72,5 +86,10 @@ export const useTreeNode = ({ node }: TUseTreeNodeProps) => {
     handleToggle,
     handleDelete,
     handleAddChild,
+    isEditing,
+    setIsEditing,
+    editName,
+    setEditName,
+    handleEditName,
   }
 }
