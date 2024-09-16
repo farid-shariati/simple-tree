@@ -1,0 +1,9 @@
+.git
+.next
+.husky
+node_modules
+public
+build
+commitlint.config.js
+package-lock.json
+tsconfig.tsbuildinfo
